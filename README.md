@@ -1,4 +1,4 @@
-# Vlady's Remix + Cloudflare Pages template
+# Vlady's Remix, Cloudflare Pages, drizzle, D1 template
 
 Demo: https://remix-pages-5er.pages.dev
 
