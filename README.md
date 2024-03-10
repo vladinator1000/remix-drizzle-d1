@@ -11,7 +11,9 @@ Demo: https://remix-pages-5er.pages.dev
 ## Database
 
 `db-migrate-gen` when you change the schema
+
 `db-migrate-apply` to apply the migrations to the database
+
 `db-studio` to inspect the database
 
 ## Development
