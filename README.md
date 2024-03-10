@@ -4,13 +4,13 @@
 
 ## Typegen
 
-Generate types for your Cloudflare bindings in `wrangler.toml`:
+`npm run gen` when you change `wrangler.toml`
 
-```sh
-npm run typegen
-```
+## Database
 
-You will need to rerun typegen whenever you make changes to `wrangler.toml`.
+`db-migrate-gen` when you change the schema
+`db-migrate-apply` to apply the migrations to the database
+`db-studio` to inspect the database
 
 ## Development
 
