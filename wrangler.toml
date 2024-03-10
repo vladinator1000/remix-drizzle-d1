@@ -1,6 +1,11 @@
 name = "remix-pages"
 compatibility_date = "2024-03-04"
 
+[[d1_databases]]
+binding = "DB"
+database_name = "shop"
+database_id = "b7f30515-5ef1-49cd-aca3-1f18e9d4f557"
+
 # Variable bindings. These are arbitrary, plaintext strings (similar to environment variables)
 # Note: Use secrets to store sensitive data.
 # Docs: https://developers.cloudflare.com/workers/platform/environment-variables
