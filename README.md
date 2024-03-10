@@ -10,6 +10,8 @@ Demo: https://remix-pages-5er.pages.dev
 
 ## Database
 
+[Create one](https://developers.cloudflare.com/d1/get-started/#3-create-a-database) and add it to `wrangler.toml`
+
 `db-migrate-gen` when you change the schema
 
 `db-migrate-apply` to apply the migrations to the database
@@ -43,7 +45,7 @@ First, build your app for production:
 npm run build
 ```
 
-Then, deploy your app to Cloudflare Pages:
+Then, deploy your app to Cloudflare Pages, you'll need to manually set up the binding for the database in the cloudflare dashboard:
 
 ```sh
 npm run deploy
