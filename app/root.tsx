@@ -20,7 +20,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ScrollRestoration />
         <Scripts />
 
-        <footer><a href="/products">See source code</a></footer>
+        <footer><a href="https://remix-pages-5er.pages.dev">See source code</a></footer>
       </body>
     </html>
   )
