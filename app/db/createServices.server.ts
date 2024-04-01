@@ -1,5 +1,5 @@
 import { DatabaseClient } from './dbClient.server'
-import { ProductService } from './product.service'
+import { ProductService } from './productService.server'
 
 type InitServicesOptions = {
   db: DatabaseClient

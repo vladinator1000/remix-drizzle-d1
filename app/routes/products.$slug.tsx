@@ -24,3 +24,5 @@ export default function Products() {
     </div>
   )
 }
+
+export function action() {}

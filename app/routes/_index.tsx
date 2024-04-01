@@ -1,6 +1,4 @@
-import {
-  type MetaFunction,
-} from '@remix-run/cloudflare'
+import { type MetaFunction } from '@remix-run/cloudflare'
 
 export const meta: MetaFunction = () => {
   return [

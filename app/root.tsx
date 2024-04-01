@@ -20,7 +20,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ScrollRestoration />
         <Scripts />
 
-        <footer><a href="https://github.com/vladinator1000/remix-drizzle-d1" target='_blank'>Source code</a></footer>
+        <footer>
+          <a
+            href="https://github.com/vladinator1000/remix-drizzle-d1"
+            target="_blank"
+          >
+            Source code
+          </a>
+        </footer>
       </body>
     </html>
   )

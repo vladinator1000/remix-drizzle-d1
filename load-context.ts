@@ -1,7 +1,7 @@
 import { AppLoadContext } from '@remix-run/cloudflare'
 import { type PlatformProxy } from 'wrangler'
 import { DatabaseClient, createDbClient } from './app/db/dbClient.server'
-import { Services, createServices } from './app/db/createServices'
+import { Services, createServices } from './app/db/createServices.server'
 
 type Cloudflare = Omit<PlatformProxy<Env>, 'dispose'>
 
@@ -20,7 +20,9 @@ declare module '@remix-run/cloudflare' {
   }
 }
 
-export async function getLoadContext({ context }: RawArg): Promise<AppLoadContext> {
+export async function getLoadContext({
+  context,
+}: RawArg): Promise<AppLoadContext> {
   const db = createDbClient(context.cloudflare.env.DB)
   const service = createServices({ db })
 
