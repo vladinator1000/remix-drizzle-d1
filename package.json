@@ -22,19 +22,24 @@
     "db-studio": "LOCAL_DB_PATH=$(find .wrangler/state/v3/d1/miniflare-D1DatabaseObject -type f -name '*.sqlite' -print -quit) drizzle-kit studio"
   },
   "dependencies": {
+    "@keckelt/tsne": "^1.0.2",
     "@remix-run/cloudflare": "^2.8.0",
     "@remix-run/cloudflare-pages": "^2.8.0",
     "@remix-run/react": "^2.8.0",
+    "chroma-js": "^2.4.2",
     "drizzle-orm": "^0.30.1",
     "isbot": "^4.1.0",
     "miniflare": "^3.20231030.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "recharts": "^2.12.4",
+    "umap-js": "^1.3.3",
     "valibot": "^0.30.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240222.0",
     "@remix-run/dev": "^2.8.0",
+    "@types/chroma-js": "^2.4.4",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
