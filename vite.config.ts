@@ -12,7 +12,4 @@ export default defineConfig({
     remix(),
     tsconfigPaths(),
   ],
-  ssr: {
-    noExternal: ['@nivo/*'],
-  },
 })
