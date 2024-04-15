@@ -1,4 +1,8 @@
-import { Point, reduceDimensions, toGridIndices } from './reduceDimensions'
+import {
+  Point,
+  reduceDimensions,
+  toGridIndexesNoGaps,
+} from './reduceDimensions'
 import {
   Product,
   encodeProduct,
@@ -10,24 +14,38 @@ import { LoaderFunctionArgs } from '@remix-run/cloudflare'
 import { useLoaderData } from '@remix-run/react'
 
 export function loader({ context }: LoaderFunctionArgs) {
-  let products = generateProducts()
-  let points = reduceDimensions(products.map(encodeProduct), 'umap')
+  let products = generateProducts(1000)
 
-  // Quantize floating point coordinates to integers (put them on a grid)
-  let indices = toGridIndices(points)
+  let encodedFeatures = products.map(encodeProduct)
+  let points = reduceDimensions(encodedFeatures, 'umap')
 
-  // Merge the products and indices
+  let squareSideLength = Math.ceil(Math.sqrt(products.length))
+  let gridSize = {
+    width: squareSideLength,
+    height: squareSideLength,
+  }
+
+  let indexes = toGridIndexesNoGaps(points, gridSize)
+
+  console.log(products.length, indexes.length)
+
+  return getCells(products, indexes)
+}
+
+function getCells(products: Product[], points: number[][]) {
   let cells: CellProps[] = []
 
   for (let i = 0; i < products.length; i++) {
     let product = products[i]
-    let index = indices[i]
+    let point = points[i]
 
-    cells.push({
-      x: index[0],
-      y: index[1],
-      ...product,
-    })
+    if (point) {
+      cells.push({
+        x: point[0],
+        y: point[1],
+        ...product,
+      })
+    }
   }
 
   return cells
@@ -53,7 +71,6 @@ function Cell({
         padding: 12,
         fontFamily: 'sans-serif',
       }}
-      key={`cell-${x}-${y}`}
     >
       <h1 style={{ marginTop: 0 }}>{name}</h1>
       <p>{formatCurrency(price)}</p>

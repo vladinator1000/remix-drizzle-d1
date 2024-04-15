@@ -1,12 +1,17 @@
 import { TSNE } from '@keckelt/tsne'
 import { UMAP } from 'umap-js'
+import { lapJv } from './lap'
+import { getSquaredEuclideanDistance } from './distance'
 
 export type Point = {
   x: number
   y: number
 }
 
-export function reduceDimensions(data: number[][], alg: 'tsne' | 'umap') {
+export function reduceDimensions(
+  data: number[][],
+  alg: 'tsne' | 'umap',
+): number[][] {
   // https://youtu.be/NEaUSP4YerM
   if (alg === 'tsne') {
     let tsne = new TSNE({
@@ -35,25 +40,106 @@ export function reduceDimensions(data: number[][], alg: 'tsne' | 'umap') {
 
 type GridSize = { width: number; height: number }
 
-let defaultGridSize = { width: 10, height: 10 }
+export function toGridIndexesWithGaps(points: number[][], gridSize: GridSize) {
+  let normalizedPoints = normalizeCoordinates(points)
 
-export function toGridIndices(
-  points: number[][],
-  gridSize: GridSize = defaultGridSize,
-) {
-  // Find the min and max for normalization
-  const minX = Math.min(...points.map((point) => point[0]))
-  const maxX = Math.max(...points.map((point) => point[0]))
-  const minY = Math.min(...points.map((point) => point[1]))
-  const maxY = Math.max(...points.map((point) => point[1]))
-
-  // Convert points to grid indices
-  return points.map((point) => {
-    const normalizedX = (point[0] - minX) / (maxX - minX)
-    const normalizedY = (point[1] - minY) / (maxY - minY)
-    const gridX = Math.floor(normalizedX * (gridSize.width - 1))
-    const gridY = Math.floor(normalizedY * (gridSize.height - 1))
+  return normalizedPoints.map((point) => {
+    const gridX = Math.floor(point[0] * (gridSize.width - 1))
+    const gridY = Math.floor(point[1] * (gridSize.height - 1))
 
     return [gridX, gridY]
   })
+}
+
+export function toGridIndexesNoGaps(points: number[][], gridSize: GridSize) {
+  let normalizedData = normalizeCoordinates(points)
+  let grid = generateGrid(gridSize)
+
+  let costMatrix = getCostMatrix(
+    grid,
+    normalizedData,
+    getSquaredEuclideanDistance,
+  )
+
+  let solution = lapJv(normalizedData.length, costMatrix)
+
+  let gridJv: number[][] = []
+
+  for (let i = 0; i < solution.col.length; i++) {
+    gridJv[i] = grid[solution.col[i] + 1]
+  }
+
+  return gridJv
+}
+
+function normalizeCoordinates(points: number[][]) {
+  let minX = points[0][0]
+  let maxX = points[0][0]
+  let minY = points[0][1]
+  let maxY = points[0][1]
+
+  let normalized: number[][] = []
+
+  for (const [x, y] of points) {
+    minX = Math.min(minX, x)
+    maxX = Math.max(maxX, x)
+    minY = Math.min(minY, y)
+    maxY = Math.max(maxY, y)
+
+    // Handle division by 0 and normalize
+    let normalizedX = maxX === minX ? 0 : (x - minX) / (maxX - minX)
+    let normalizedY = maxY === minY ? 0 : (y - minY) / (maxY - minY)
+
+    normalized.push([normalizedX, normalizedY])
+  }
+
+  return normalized
+}
+
+function getCostMatrix(
+  inputPoints: number[][],
+  targetPoints: number[][],
+  costFunction: (point1: number[], point2: number[]) => number,
+): number[][] {
+  const costMatrix: number[][] = []
+
+  for (let i = 0; i < inputPoints.length; i++) {
+    costMatrix[i] = []
+    for (let j = 0; j < targetPoints.length; j++) {
+      const cost = costFunction(inputPoints[i], targetPoints[j])
+      costMatrix[i][j] = cost
+    }
+  }
+
+  getArrayDimensions(inputPoints, 'input')
+  getArrayDimensions(targetPoints, 'target')
+  getArrayDimensions(costMatrix, 'cost')
+
+  return costMatrix
+}
+
+export function generateGrid(size: GridSize): number[][] {
+  const grid: number[][] = []
+
+  for (let x = 0; x < size.width; x++) {
+    for (let y = 0; y < size.height; y++) {
+      grid.push([x, y])
+    }
+  }
+
+  return grid
+}
+
+function getArrayDimensions<T>(array: T[], name: string): number[] {
+  const dimensions: number[] = []
+  let arr: any = array
+
+  while (Array.isArray(arr)) {
+    dimensions.push(arr.length)
+    arr = arr[0]
+  }
+
+  console.log(`${name} dimensions: ${dimensions.join(' x ')}`)
+
+  return dimensions
 }

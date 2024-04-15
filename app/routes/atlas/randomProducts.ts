@@ -6,7 +6,7 @@ export function randomInt(max: number) {
 
 export type Product = ReturnType<typeof generateProducts>[0]
 
-export function generateProducts(amount = 100) {
+export function generateProducts(amount: number) {
   let products = []
 
   for (let i = 0; i < amount; i++) {
@@ -33,12 +33,10 @@ export function deserializeChromaColor(color: any): Color {
 export function encodeProduct(product: Product): number[] {
   return [
     ...product.color._rgb._unclipped,
-    product.price,
-    product.numFibers,
     product.metersPer100gPer1Fiber,
+    product.price,
   ]
 }
-
 function getLetter(i: number) {
   return String.fromCharCode(97 + (i % 26))
 }
