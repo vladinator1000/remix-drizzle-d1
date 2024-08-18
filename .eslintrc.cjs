@@ -79,5 +79,12 @@ module.exports = {
         node: true,
       },
     },
+
+    // All
+    {
+      rules: {
+        'prefer-const': 'off',
+      },
+    },
   ],
 }
