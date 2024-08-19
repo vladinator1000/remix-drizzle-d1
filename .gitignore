@@ -7,3 +7,7 @@ node_modules
 .wrangler
 
 .dev.vars
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

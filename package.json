@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
+    "e2e-test": "playwright test",
     "build": "remix vite:build",
     "deploy": "npm run build && wrangler pages deploy ./build/client",
     "dev": "remix vite:dev",
@@ -39,8 +40,10 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240222.0",
+    "@playwright/test": "^1.46.1",
     "@remix-run/dev": "^2.8.0",
     "@types/chroma-js": "^2.4.4",
+    "@types/node": "^22.4.1",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
